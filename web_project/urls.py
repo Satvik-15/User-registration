@@ -17,10 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from first_app import views
+
 
 urlpatterns = [
     path('', include("first_app.urls")),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/google/login/callback/', views.google_login_callback),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
