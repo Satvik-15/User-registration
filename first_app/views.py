@@ -1,13 +1,24 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from first_app.forms import UserForm
 from first_app.forms import UserProfileInfoForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from allauth.socialaccount.models import SocialAccount
 
 
 # Create your views here.
+def google_login_callback(request):
+    # Get the user's social account from the callback request
+    social_account = SocialAccount.objects.get(
+        provider='google', user=request.user)
+
+    # Log the user in
+    login(request, social_account.user)
+
+    # Redirect the user to the home page
+    return redirect('home')
 
 
 def base(request):
@@ -17,6 +28,10 @@ def base(request):
 
 def yoyo(request):
     return render(request, 'first_app/yoyo.html')
+
+
+def logged_in(request):
+    return render(request, 'first_app/logged_in.html')
 
 
 def index(request):
@@ -68,7 +83,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/index/')
+                return render(request, 'first_app/logged_in.html')
 
             else:
                 return HttpResponse("Account not active ")

@@ -1,4 +1,5 @@
 {% extends 'first_app/base.html' %}
+{% load socialaccount %}
 {% block body_block %}
   <div class="container">
     <div class="jumbotron">
@@ -7,28 +8,16 @@
         <form method="post" action="login">
           {% csrf_token %}
           {# A more "HTML" way of creating the login form#}
-          <label for="username">Username:</label>
+          <label for="userame">Username:</label>
           <input type="text" name="username" placeholder="Username">
 
-          <label for="password"></label>
+          <label for="passord"></label>
           <input type="password" name="password">
 
           <input type="submit" name="submit" value="Submit">
-
         </form>
 
-        <form method="post" action="login">
-          {% csrf_token %}
-          {# A more "HTML" way of creating the login form#}
-          <label for="username">Username:</label>
-          <input type="text" name="username" placeholder="Username">
-
-          <label for="password"></label>
-          <input type="password" name="password">
-
-          <input type="submit" name="submit" value="Submit">
-
-        </form>
+        <a href="{% provider_login_url 'google' process='login' %}">Login with Google</a>
 
     </div>
   </div>
